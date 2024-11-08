@@ -6,10 +6,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "category")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
+
   @EmbeddedId
   private CategoryId id;
 

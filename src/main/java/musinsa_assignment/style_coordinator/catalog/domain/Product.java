@@ -6,10 +6,14 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "product")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
+
   @EmbeddedId
   private ProductId id;
   @Embedded
