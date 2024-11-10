@@ -11,8 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(staticName = "of")
 public class BrandId {
+
   @Column(name = "brand_id")
   private String value;
+
+  public String getValue() {
+    return value;
+  }
 
   @Override
   public boolean equals(Object o) {
