@@ -40,22 +40,22 @@ class ProductDataDaoTest {
     jdbcTemplate.update("insert into category values(?,?)", 0, "TOP");
     jdbcTemplate.update("insert into brand values(?,?)", 0, "A");
 
-    Long cheapestProductId1 = 0l;
+    String cheapestProductId1 = "0";
     jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", cheapestProductId1, 0, 0,
         BigDecimal.valueOf(10000));
     jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 1, 0, 1, BigDecimal.valueOf(10500));
     jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 2, 0, 2, BigDecimal.valueOf(11200));
     jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 3, 0, 3, BigDecimal.valueOf(10100));
 
-    Long cheapestProductId2 = 5l;
+    String cheapestProductId2 = "5";
     jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 4, 1, 1, BigDecimal.valueOf(5900));
     jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", cheapestProductId2, 1, 0,
         BigDecimal.valueOf(5500));
     jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 6, 1, 2, BigDecimal.valueOf(6200));
 
     // when
-    ProductData productData1 = productDao.findTop1ByCategoryIdOrderByPriceAsc(CategoryId.of(0l)).get();
-    ProductData productData2 = productDao.findTop1ByCategoryIdOrderByPriceAsc(CategoryId.of(1l)).get();
+    ProductData productData1 = productDao.findTop1ByCategoryIdOrderByPriceAsc(CategoryId.of("0")).get();
+    ProductData productData2 = productDao.findTop1ByCategoryIdOrderByPriceAsc(CategoryId.of("1")).get();
 
     // then
     assertThat(productData1.getId()).isEqualTo(ProductId.of(cheapestProductId1));

@@ -35,32 +35,32 @@ class BrandDaoTest {
   @DisplayName("모든 카테고리 제품의 가격의 합이 가장 작은 브랜드를 반환")
   void findCheapest() {
     // given
-    jdbcTemplate.update("insert into category values(?,?)", 0, "TOP");
-    jdbcTemplate.update("insert into category values(?,?)", 1, "OUTER");
-    jdbcTemplate.update("insert into category values(?,?)", 2, "PANTS");
+    jdbcTemplate.update("insert into category values(?,?)", "0", "TOP");
+    jdbcTemplate.update("insert into category values(?,?)", "1", "OUTER");
+    jdbcTemplate.update("insert into category values(?,?)", "2", "PANTS");
 
-    jdbcTemplate.update("insert into brand values(?,?)", 0, "A");
-    jdbcTemplate.update("insert into brand values(?,?)", 1, "B");
-    jdbcTemplate.update("insert into brand values(?,?)", 2, "C");
+    jdbcTemplate.update("insert into brand values(?,?)", "0", "A");
+    jdbcTemplate.update("insert into brand values(?,?)", "1", "B");
+    jdbcTemplate.update("insert into brand values(?,?)", "2", "C");
 
-    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 0, 0, 0,
+    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", "0", "0", "0",
         BigDecimal.valueOf(10000));
-    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 1, 1, 0, BigDecimal.valueOf(10000));
-    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 2, 2, 0, BigDecimal.valueOf(10000));
+    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", "1", "1", "0", BigDecimal.valueOf(10000));
+    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", "2", "2", "0", BigDecimal.valueOf(10000));
 
-    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 3, 0, 1, BigDecimal.valueOf(20000));
-    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 4, 1, 1, BigDecimal.valueOf(20000));
-    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 5, 2, 1,
+    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", "3", "0", "1", BigDecimal.valueOf(20000));
+    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", "4", "1", "1", BigDecimal.valueOf(20000));
+    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", "5", "2", "1",
         BigDecimal.valueOf(20000));
 
-    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 6, 0, 2, BigDecimal.valueOf(30000));
-    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 7, 1, 2, BigDecimal.valueOf(30000));
-    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", 8, 2, 2, BigDecimal.valueOf(30000));
+    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", "6", "0", "2", BigDecimal.valueOf(30000));
+    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", "7", "1", "2", BigDecimal.valueOf(30000));
+    jdbcTemplate.update("insert into product(product_id, category_id, brand_id, price) values(?,?,?,?)", "8", "2", "2", BigDecimal.valueOf(30000));
 
     // when
     BrandData result = brandDao.findCheapest();
 
     // then
-    assertThat(result.getId()).isEqualTo(BrandId.of(0L));
+    assertThat(result.getId()).isEqualTo(BrandId.of("0"));
   }
 }

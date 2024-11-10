@@ -57,34 +57,37 @@ public class BrandQueryServiceTest {
   @DisplayName("모든 카테고리의 가격 총 합이 가장 낮은 브랜드의 정보와 각 상품의 가격, 카테고리 리스트를 반환한다")
   void getCheapestCategoryBundleView() {
     // given, when
-    when(brandDao.findCheapest()).thenReturn(BrandData.builder().id(BrandId.of(3L)).name("D").build());
+    when(brandDao.findCheapest()).thenReturn(BrandData.builder().id(BrandId.of("3L")).name("D").build());
 
     when(productDao.findByBrandId(any(BrandId.class))).thenReturn(Arrays.asList(
-        ProductData.builder().id(ProductId.of(0L)).categoryId(CategoryId.of(0L)).brandId(BrandId.of(3L)).price(Money.of(BigDecimal.valueOf(10000L)))
+        ProductData.builder().id(ProductId.of("0L")).categoryId(CategoryId.of("0L")).brandId(BrandId.of("3L"))
+            .price(Money.of(BigDecimal.valueOf(10000L)))
             .build(),
-        ProductData.builder().id(ProductId.of(1L)).categoryId(CategoryId.of(1L)).brandId(BrandId.of(3L)).price(Money.of(BigDecimal.valueOf(5100L)))
+        ProductData.builder().id(ProductId.of("1L")).categoryId(CategoryId.of("1L")).brandId(BrandId.of("3L"))
+            .price(Money.of(BigDecimal.valueOf(5100L)))
             .build(),
-        ProductData.builder().id(ProductId.of(2L)).categoryId(CategoryId.of(2L)).brandId(BrandId.of(3L)).price(Money.of(BigDecimal.valueOf(3000L)))
+        ProductData.builder().id(ProductId.of("2L")).categoryId(CategoryId.of("2L")).brandId(BrandId.of("3L"))
+            .price(Money.of(BigDecimal.valueOf(3000L)))
             .build()
     ));
 
     doAnswer((Answer<Optional<CategoryData>>) invocation -> {
       CategoryId categoryId = invocation.getArgument(0);
 
-      if (categoryId.equals(CategoryId.of(0L))) {
+      if (categoryId.equals(CategoryId.of("0L"))) {
         return Optional.of(CategoryData.builder()
-            .id(CategoryId.of(0L))
+            .id(CategoryId.of("0L"))
             .type(TOP)
             .build());
       }
-      if (categoryId.equals(CategoryId.of(1L))) {
+      if (categoryId.equals(CategoryId.of("1L"))) {
         return Optional.of(CategoryData.builder()
-            .id(CategoryId.of(1L))
+            .id(CategoryId.of("1L"))
             .type(CategoryType.OUTER)
             .build());
       }
       return Optional.of(CategoryData.builder()
-          .id(CategoryId.of(2L))
+          .id(CategoryId.of("2L"))
           .type(CategoryType.PANTS)
           .build());
 

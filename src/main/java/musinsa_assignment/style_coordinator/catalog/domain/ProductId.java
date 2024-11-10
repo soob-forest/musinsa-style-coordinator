@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ProductId {
 
   @Column(name = "product_id")
-  private Long value;
+  private String value;
 
   @Override
   public boolean equals(Object o) {

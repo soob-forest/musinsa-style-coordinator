@@ -52,34 +52,34 @@ class CategoryQueryServiceTest {
   void setUp() {
     // given, when
     when(categoryDao.findAll()).thenReturn(Arrays.asList(
-        CategoryData.builder().id(CategoryId.of(0L)).type(TOP).build(),
-        CategoryData.builder().id(CategoryId.of(1L)).type(OUTER).build(),
-        CategoryData.builder().id(CategoryId.of(2L)).type(PANTS).build()
+        CategoryData.builder().id(CategoryId.of("0")).type(TOP).build(),
+        CategoryData.builder().id(CategoryId.of("1")).type(OUTER).build(),
+        CategoryData.builder().id(CategoryId.of("2")).type(PANTS).build()
     ));
 
     doAnswer((Answer<Optional<ProductData>>) invocation -> {
       CategoryId categoryId = invocation.getArgument(0);
 
-      if (categoryId.equals(CategoryId.of(0L))) {
+      if (categoryId.equals(CategoryId.of("0"))) {
         return Optional.of(ProductData.builder()
-            .id(ProductId.of(0L))
-            .categoryId(CategoryId.of(0L))
-            .brandId(BrandId.of(2L))
+            .id(ProductId.of("0"))
+            .categoryId(CategoryId.of("0"))
+            .brandId(BrandId.of("2"))
             .price(Money.of(BigDecimal.valueOf(10000L)))
             .build());
       }
-      if (categoryId.equals(CategoryId.of(1L))) {
+      if (categoryId.equals(CategoryId.of("1"))) {
         return Optional.of(ProductData.builder()
-            .id(ProductId.of(1L))
-            .categoryId(CategoryId.of(1L))
-            .brandId(BrandId.of(5L))
+            .id(ProductId.of("1"))
+            .categoryId(CategoryId.of("1"))
+            .brandId(BrandId.of("5"))
             .price(Money.of(BigDecimal.valueOf(5000L)))
             .build());
       }
       return Optional.of(ProductData.builder()
-          .id(ProductId.of(2L))
-          .categoryId(CategoryId.of(2L))
-          .brandId(BrandId.of(4L))
+          .id(ProductId.of("2"))
+          .categoryId(CategoryId.of("2"))
+          .brandId(BrandId.of("4"))
           .price(Money.of(BigDecimal.valueOf(9000L)))
           .build());
 
@@ -88,20 +88,20 @@ class CategoryQueryServiceTest {
     doAnswer((Answer<Optional<BrandData>>) invocation -> {
       BrandId brandId = invocation.getArgument(0);
 
-      if (brandId.equals(BrandId.of(2L))) {
+      if (brandId.equals(BrandId.of("2"))) {
         return Optional.of(BrandData.builder()
-            .id(BrandId.of(2L))
+            .id(BrandId.of("2"))
             .name("C")
             .build());
       }
-      if (brandId.equals(BrandId.of(5L))) {
+      if (brandId.equals(BrandId.of("5"))) {
         return Optional.of(BrandData.builder()
-            .id(BrandId.of(5L))
+            .id(BrandId.of("5"))
             .name("E")
             .build());
       }
       return Optional.of(BrandData.builder()
-          .id(BrandId.of(4L))
+          .id(BrandId.of("4"))
           .name("D")
           .build());
 

@@ -45,15 +45,15 @@ class ProductQueryServiceTest {
   void searchMinAndMaxProductsByCategory() {
     // given
     String categoryName = "상의";
-    CategoryId categoryId = CategoryId.of(0L);
+    CategoryId categoryId = CategoryId.of("0");
     CategoryData category = new CategoryData(categoryId, CategoryType.TOP);
-    BrandData brandC = new BrandData(BrandId.of(0L), "C");
-    BrandData brandI = new BrandData(BrandId.of(1L), "I");
+    BrandData brandC = new BrandData(BrandId.of("0"), "C");
+    BrandData brandI = new BrandData(BrandId.of("1"), "I");
 
-    ProductData minProduct1 = new ProductData(ProductId.of(0L), categoryId, brandC.getId(), Money.of(BigDecimal.valueOf(10000L)));
-    ProductData minProduct2 = new ProductData(ProductId.of(1L), categoryId, brandI.getId(), Money.of(BigDecimal.valueOf(10000L)));
+    ProductData minProduct1 = new ProductData(ProductId.of("0"), categoryId, brandC.getId(), Money.of(BigDecimal.valueOf(10000L)));
+    ProductData minProduct2 = new ProductData(ProductId.of("1"), categoryId, brandI.getId(), Money.of(BigDecimal.valueOf(10000L)));
 
-    ProductData maxProduct = new ProductData(ProductId.of(2L), categoryId, brandI.getId(), Money.of(BigDecimal.valueOf(11400L)));
+    ProductData maxProduct = new ProductData(ProductId.of("2"), categoryId, brandI.getId(), Money.of(BigDecimal.valueOf(11400L)));
 
     // when
     when(categoryDao.findByType(CategoryType.findByName(categoryName)))
@@ -78,7 +78,7 @@ class ProductQueryServiceTest {
 
     // then
     assertThat(result.categoryName()).isEqualTo("상의");
-    
+
     assertThat(result.minPrice()).hasSize(2)
         .extracting("brandName", "price")
         .containsExactlyInAnyOrder(

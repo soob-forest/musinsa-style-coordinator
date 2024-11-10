@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 public class BrandId {
   @Column(name = "brand_id")
-  private Long value;
+  private String value;
 
   @Override
   public boolean equals(Object o) {
