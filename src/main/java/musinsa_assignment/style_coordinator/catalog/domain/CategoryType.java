@@ -25,4 +25,13 @@ public enum CategoryType {
   public int getExposureOrder() {
     return exposureOrder;
   }
+
+  public static CategoryType findByName(String name) {
+    for (CategoryType type : CategoryType.values()) {
+      if (type.name.equals(name)) {
+        return type;
+      }
+    }
+    throw new IllegalArgumentException("일치하는 카테고리를 찾을 수 없습니다: " + name);
+  }
 }
