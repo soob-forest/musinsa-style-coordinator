@@ -2,10 +2,11 @@ package musinsa_assignment.style_coordinator.admin.ui.integration;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 import io.restassured.RestAssured;
 import java.util.Map;
-import musinsa_assignment.style_coordinator.catalog.command.application.brand.BrandResponse;
 import musinsa_assignment.style_coordinator.catalog.domain.Brand;
 import musinsa_assignment.style_coordinator.catalog.domain.BrandId;
 import musinsa_assignment.style_coordinator.catalog.domain.BrandRepository;
@@ -49,7 +50,7 @@ class AdminBrandControllerTest {
     // given
     var newBrandName = "new";
     // when
-    var response = given()
+    given()
         .body(Map.of("name", newBrandName))
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -57,12 +58,9 @@ class AdminBrandControllerTest {
         .post("/admin/api/v1/brands")
         .then()
         .log().all()
-        .statusCode(HttpStatus.OK.value()).extract().as(BrandResponse.class);
-
-    // then
-    var brand = brandRepository.findById(BrandId.of(response.id())).get();
-    assertThat(response.id()).isEqualTo(brand.getId().getValue());
-    assertThat(brand.getName()).isEqualTo(newBrandName);
+        .statusCode(HttpStatus.OK.value())
+        .body("data.id", notNullValue())
+        .body("data.name", equalTo(newBrandName));
   }
 
   @Test

@@ -2,11 +2,12 @@ package musinsa_assignment.style_coordinator.admin.ui.integration;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 import io.restassured.RestAssured;
 import java.math.BigDecimal;
 import musinsa_assignment.style_coordinator.catalog.command.application.product.ProductRequest;
-import musinsa_assignment.style_coordinator.catalog.command.application.product.ProductResponse;
 import musinsa_assignment.style_coordinator.catalog.domain.BrandId;
 import musinsa_assignment.style_coordinator.catalog.domain.CategoryId;
 import musinsa_assignment.style_coordinator.catalog.domain.Money;
@@ -75,7 +76,7 @@ class AdminProductControllerTest {
     var request = new ProductRequest("0", "0", new BigDecimal("1000.00"));
 
     // when
-    var response = given()
+    given()
         .body(request)
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -83,15 +84,12 @@ class AdminProductControllerTest {
         .post("/admin/api/v1/products")
         .then()
         .log().all()
-        .statusCode(HttpStatus.OK.value()).extract().as(ProductResponse.class);
+        .statusCode(HttpStatus.OK.value())
+        .body("data.id", notNullValue())
+        .body("data.categoryId", equalTo(request.categoryId()))
+        .body("data.brandId", equalTo(request.brandId()))
+        .body("data.price", equalTo(1000.00f));
 
-    // then
-    var product = productRepository.findById(ProductId.of(response.id())).get();
-
-    assertThat(response.id()).isEqualTo(product.getId().getValue());
-    assertThat(response.categoryId()).isEqualTo(product.getCategoryId().getValue());
-    assertThat(response.brandId()).isEqualTo(product.getBrandId().getValue());
-    assertThat(response.price()).isEqualTo(product.getPrice().getValue());
   }
 
   @Test

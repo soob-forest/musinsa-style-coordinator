@@ -1,4 +1,4 @@
-package musinsa_assignment.style_coordinator.catalog.controller;
+package musinsa_assignment.style_coordinator.catalog.ui.controller;
 
 import lombok.RequiredArgsConstructor;
 import musinsa_assignment.style_coordinator.catalog.query.application.brand.BrandQueryService;

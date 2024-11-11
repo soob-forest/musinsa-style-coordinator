@@ -1,12 +1,9 @@
 package musinsa_assignment.style_coordinator.catalog.integration;
 
 import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
+import static org.hamcrest.Matchers.equalTo;
 
 import io.restassured.RestAssured;
-import java.math.BigDecimal;
-import musinsa_assignment.style_coordinator.catalog.query.application.product.MinAndMaxPriceProductView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +33,7 @@ public class ProductControllerTest {
   void minAndMaxPriceProductByCategory() {
 
     // when
-    var response = given()
+    given()
         .queryParam("category", "상의")
         .accept(MediaType.APPLICATION_JSON_VALUE)
         .when()
@@ -44,21 +41,12 @@ public class ProductControllerTest {
         .then()
         .log().all()
         .statusCode(HttpStatus.OK.value())
-        .extract().as(MinAndMaxPriceProductView.class);
-
-    // then
-    assertThat(response.categoryName()).isEqualTo("상의");
-
-    assertThat(response.minPrice()).hasSize(1)
-        .extracting("brandName", "price")
-        .containsExactlyInAnyOrder(
-            tuple("C", new BigDecimal("10000.00"))
-        );
-
-    assertThat(response.maxPrice()).hasSize(1)
-        .extracting("brandName", "price")
-        .containsExactlyInAnyOrder(
-            tuple("I", new BigDecimal("11400.00"))
-        );
+        .body("data.categoryName", equalTo("상의"))
+        .body("data.minPrice.size()", equalTo(1))
+        .body("data.minPrice[0].brandName", equalTo("C"))
+        .body("data.minPrice[0].price", equalTo(10000.00f))
+        .body("data.maxPrice.size()", equalTo(1))
+        .body("data.maxPrice[0].brandName", equalTo("I"))
+        .body("data.maxPrice[0].price", equalTo(11400.00f));
   }
 }

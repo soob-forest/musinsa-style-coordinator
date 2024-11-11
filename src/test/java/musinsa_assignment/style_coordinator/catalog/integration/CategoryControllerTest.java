@@ -1,21 +1,10 @@
 package musinsa_assignment.style_coordinator.catalog.integration;
 
 import static io.restassured.RestAssured.given;
-import static musinsa_assignment.style_coordinator.catalog.domain.CategoryType.ACCESSORY;
-import static musinsa_assignment.style_coordinator.catalog.domain.CategoryType.BAG;
-import static musinsa_assignment.style_coordinator.catalog.domain.CategoryType.HAT;
-import static musinsa_assignment.style_coordinator.catalog.domain.CategoryType.OUTER;
-import static musinsa_assignment.style_coordinator.catalog.domain.CategoryType.PANTS;
-import static musinsa_assignment.style_coordinator.catalog.domain.CategoryType.SNEAKERS;
-import static musinsa_assignment.style_coordinator.catalog.domain.CategoryType.SOCKS;
-import static musinsa_assignment.style_coordinator.catalog.domain.CategoryType.TOP;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
+import static org.hamcrest.Matchers.equalTo;
 
 import io.restassured.RestAssured;
-import java.math.BigDecimal;
-import musinsa_assignment.style_coordinator.catalog.controller.CategoryController;
-import musinsa_assignment.style_coordinator.catalog.query.application.category.CheapestPerCategoryView;
+import musinsa_assignment.style_coordinator.catalog.ui.controller.CategoryController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,30 +35,49 @@ public class CategoryControllerTest {
   @Test
   @DisplayName("고객은 카테고리 별로 최저가격인 브랜드와 가격을 조회하고 총액이 얼마인지 확인할 수 있어야 한다.")
   void getCheapestPerCategoryView() {
-    // when
-    var response = given()
+    // when, then
+    given()
         .accept(MediaType.APPLICATION_JSON_VALUE)
         .when()
         .get("/api/v1/categories/cheapestProducts")
         .then()
         .log().all()
         .statusCode(HttpStatus.OK.value())
-        .extract().as(CheapestPerCategoryView.class);
-
-    // then
-    assertThat(response.contents()).hasSize(8)
-        .extracting("categoryName", "brandName", "price")
-        .containsExactly(
-            tuple(TOP.getName(), "C", new BigDecimal("10000.00")),
-            tuple(OUTER.getName(), "E", new BigDecimal("5000.00")),
-            tuple(PANTS.getName(), "D", new BigDecimal("3000.00")),
-            // TODO 현재 구현상으로는 A와 G가 가격이 같아, A가 노출되어 수정 필요
-            tuple(SNEAKERS.getName(), "A", new BigDecimal("9000.00")),
-            tuple(BAG.getName(), "A", new BigDecimal("2000.00")),
-            tuple(HAT.getName(), "D", new BigDecimal("1500.00")),
-            tuple(SOCKS.getName(), "I", new BigDecimal("1700.00")),
-            tuple(ACCESSORY.getName(), "F", new BigDecimal("1900.00"))
-        );
+        .body("data.totalPrice", equalTo(34100.00f))
+        .body("data.contents.size()", equalTo(8))
+        // 상의
+        .body("data.contents[0].categoryName", equalTo("상의"))
+        .body("data.contents[0].brandName", equalTo("C"))
+        .body("data.contents[0].price", equalTo(10000.00f))
+        // 아우터
+        .body("data.contents[1].categoryName", equalTo("아우터"))
+        .body("data.contents[1].brandName", equalTo("E"))
+        .body("data.contents[1].price", equalTo(5000.00f))
+        // 바지
+        .body("data.contents[2].categoryName", equalTo("바지"))
+        .body("data.contents[2].brandName", equalTo("D"))
+        .body("data.contents[2].price", equalTo(3000.00f))
+        // TODO 현재 구현상으로는 A와 G가 가격이 같아, A가 노출되어 수정 필요
+        // 스니커즈
+        .body("data.contents[3].categoryName", equalTo("스니커즈"))
+        .body("data.contents[3].brandName", equalTo("A"))
+        .body("data.contents[3].price", equalTo(9000.00f))
+        // 가방
+        .body("data.contents[4].categoryName", equalTo("가방"))
+        .body("data.contents[4].brandName", equalTo("A"))
+        .body("data.contents[4].price", equalTo(2000.00f))
+        // 모자
+        .body("data.contents[5].categoryName", equalTo("모자"))
+        .body("data.contents[5].brandName", equalTo("D"))
+        .body("data.contents[5].price", equalTo(1500.00f))
+        // 양말
+        .body("data.contents[6].categoryName", equalTo("양말"))
+        .body("data.contents[6].brandName", equalTo("I"))
+        .body("data.contents[6].price", equalTo(1700.00f))
+        // 액세서리
+        .body("data.contents[7].categoryName", equalTo("악세서리"))
+        .body("data.contents[7].brandName", equalTo("F"))
+        .body("data.contents[7].price", equalTo(1900.00f));
 
   }
 }
