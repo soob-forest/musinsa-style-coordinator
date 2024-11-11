@@ -12,6 +12,8 @@ public interface ProductRepository extends Repository<Product, ProductId> {
 
   void save(Product brand);
 
+  void delete(Product product);
+
   @Modifying(clearAutomatically = true, flushAutomatically = true)
   @Query("delete from Product p where p.brandId = :brandId")
   void deleteAllByBrandId(BrandId brandId);
@@ -20,4 +22,6 @@ public interface ProductRepository extends Repository<Product, ProductId> {
     IdGenerator idGenerator = new NanoIdGenerator();
     return ProductId.of(idGenerator.generateId());
   }
+
+
 }

@@ -15,6 +15,10 @@ public class CategoryId {
   @Column(name = "category_id")
   private String value;
 
+  public String getValue() {
+    return value;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
