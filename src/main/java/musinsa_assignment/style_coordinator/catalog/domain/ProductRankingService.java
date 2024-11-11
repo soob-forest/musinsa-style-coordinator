@@ -7,4 +7,6 @@ public interface ProductRankingService {
   List<ProductRankingData> findMinPriceRankingByCategoryId(CategoryId categoryId);
 
   List<ProductRankingData> findMinPriceRankingByBrandId(BrandId brandId);
+
+  List<ProductRankingData> findMaxPriceRankingByCategoryId(CategoryId categoryId);
 }

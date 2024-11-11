@@ -15,11 +15,11 @@ import musinsa_assignment.style_coordinator.catalog.domain.ProductId;
 import musinsa_assignment.style_coordinator.catalog.query.application.product.ProductQueryService;
 import musinsa_assignment.style_coordinator.catalog.query.dao.BrandDao;
 import musinsa_assignment.style_coordinator.catalog.query.dao.CategoryDao;
-import musinsa_assignment.style_coordinator.catalog.query.dao.ProductDao;
 import musinsa_assignment.style_coordinator.catalog.query.dto.BrandData;
 import musinsa_assignment.style_coordinator.catalog.query.dto.CategoryData;
-import musinsa_assignment.style_coordinator.catalog.query.dto.ProductData;
 import musinsa_assignment.style_coordinator.common.domain.Money;
+import musinsa_assignment.style_coordinator.ranking.query.PriceRankingData;
+import musinsa_assignment.style_coordinator.ranking.query.RankingService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +32,9 @@ class ProductQueryServiceTest {
   @MockBean
   private CategoryDao categoryDao;
   @MockBean
-  private ProductDao productDao;
-  @MockBean
   private BrandDao brandDao;
-
+  @MockBean
+  private RankingService rankingService;
 
   @Autowired
   private ProductQueryService productQueryService;
@@ -50,24 +49,18 @@ class ProductQueryServiceTest {
     BrandData brandC = new BrandData(BrandId.of("0"), "C");
     BrandData brandI = new BrandData(BrandId.of("1"), "I");
 
-    ProductData minProduct1 = new ProductData(ProductId.of("0"), categoryId, brandC.getId(), Money.of(BigDecimal.valueOf(10000L)));
-    ProductData minProduct2 = new ProductData(ProductId.of("1"), categoryId, brandI.getId(), Money.of(BigDecimal.valueOf(10000L)));
-
-    ProductData maxProduct = new ProductData(ProductId.of("2"), categoryId, brandI.getId(), Money.of(BigDecimal.valueOf(11400L)));
+    var minRankingProduct1 = new PriceRankingData(categoryId, brandC.getId(), ProductId.of("p1"), Money.of(BigDecimal.valueOf(10000L)));
+    var minRankingProduct2 = new PriceRankingData(categoryId, brandI.getId(), ProductId.of("p2"), Money.of(BigDecimal.valueOf(10000L)));
+    var maxRankingProduct = new PriceRankingData(categoryId, brandI.getId(), ProductId.of("p2"), Money.of(BigDecimal.valueOf(11400L)));
 
     // when
     when(categoryDao.findByType(CategoryType.findByName(categoryName)))
         .thenReturn(Optional.of(category));
 
-    when(productDao.findTop1ByCategoryIdOrderByPriceAsc(categoryId))
-        .thenReturn(Optional.of(minProduct1));
-    when(productDao.findTop1ByCategoryIdOrderByPriceDesc(categoryId))
-        .thenReturn(Optional.of(maxProduct));
-
-    when(productDao.findByPrice(Money.of(BigDecimal.valueOf(10000L))))
-        .thenReturn(List.of(minProduct1, minProduct2));
-    when(productDao.findByPrice(Money.of(BigDecimal.valueOf(11400L))))
-        .thenReturn(List.of(maxProduct));
+    when(rankingService.findMinPriceRankingByCategoryId(categoryId))
+        .thenReturn(List.of(minRankingProduct1, minRankingProduct2));
+    when(rankingService.findMaxPriceRankingByCategoryId(categoryId))
+        .thenReturn(List.of(maxRankingProduct));
 
     when(brandDao.findById(brandC.getId()))
         .thenReturn(Optional.of(brandC));
@@ -82,14 +75,14 @@ class ProductQueryServiceTest {
     assertThat(result.minPrice()).hasSize(2)
         .extracting("brandName", "price")
         .containsExactlyInAnyOrder(
-            tuple(brandC.getName(), minProduct1.getPrice().getValue()),
-            tuple(brandI.getName(), minProduct1.getPrice().getValue())
+            tuple(brandC.getName(), minRankingProduct1.price().getValue()),
+            tuple(brandI.getName(), minRankingProduct1.price().getValue())
         );
 
     assertThat(result.maxPrice()).hasSize(1)
         .extracting("brandName", "price")
         .containsExactlyInAnyOrder(
-            tuple(brandI.getName(), maxProduct.getPrice().getValue())
+            tuple(brandI.getName(), maxRankingProduct.price().getValue())
         );
   }
 }

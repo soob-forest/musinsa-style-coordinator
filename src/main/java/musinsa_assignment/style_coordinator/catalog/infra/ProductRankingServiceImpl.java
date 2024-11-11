@@ -27,4 +27,10 @@ public class ProductRankingServiceImpl implements ProductRankingService {
     var minPriceProducts = rankingService.findMinPriceRankingByBrandId(brandId);
     return minPriceProducts.stream().map(ProductRankingData::from).collect(Collectors.toList());
   }
+
+  @Override
+  public List<ProductRankingData> findMaxPriceRankingByCategoryId(CategoryId categoryId) {
+    var maxPriceProducts = rankingService.findMaxPriceRankingByCategoryId(categoryId);  
+    return maxPriceProducts.stream().map(ProductRankingData::from).collect(Collectors.toList());
+  }
 }

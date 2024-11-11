@@ -107,12 +107,22 @@ insert into product values (69, 8, 5, 1700);  -- HAT
 insert into product values (70, 8, 6, 1700);  -- SOCKS
 insert into product values (71, 8, 7, 2400);  -- ACCESSORY
 
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (0, 16, 2, 0, 10000);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (1, 33, 4, 1, 5000);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (2, 26,3, 2, 3000);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (3, 3, 6, 3, 9000);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (4, 51,6, 3, 9000);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (5, 4, 0, 4, 2000);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (6, 29 ,3, 5, 1500);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (7, 70,8, 6, 1700);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (8, 47 ,5, 7, 1900);
 
-insert into min_price_ranking values (0, 2, 0, 10000);
-insert into min_price_ranking values (1, 4, 1, 5000);
-insert into min_price_ranking values (2, 3, 2, 3000);
-insert into min_price_ranking values (3, 6, 3, 9000);
-insert into min_price_ranking values (4, 0, 4, 2000);
-insert into min_price_ranking values (5, 3, 5, 1500);
-insert into min_price_ranking values (6, 8, 6, 1700);
-insert into min_price_ranking values (7, 5, 7, 1900);
+-- max price ranking
+insert into max_price_ranking(id, product_id, brand_id, category_id, price) values (1, 64, 8, 0, 11400);
+insert into max_price_ranking(id, product_id, brand_id, category_id, price) values (2, 41, 5, 1, 7200);
+insert into max_price_ranking(id, product_id, brand_id, category_id, price) values (3, 2, 0, 2, 4200);
+insert into max_price_ranking(id, product_id, brand_id, category_id, price) values (4, 35, 4, 3, 9900);
+insert into max_price_ranking(id, product_id, brand_id, category_id, price) values (5, 28, 3, 4, 2500);
+insert into max_price_ranking(id, product_id, brand_id, category_id, price) values (6, 13, 1, 5, 2000);
+insert into max_price_ranking(id, product_id, brand_id, category_id, price) values (7, 30, 3, 6, 2400);
+insert into max_price_ranking(id, product_id, brand_id, category_id, price) values (8, 71, 8, 7, 2400);
