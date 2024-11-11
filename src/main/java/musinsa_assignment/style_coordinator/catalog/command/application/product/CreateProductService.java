@@ -8,6 +8,7 @@ import musinsa_assignment.style_coordinator.catalog.domain.Category;
 import musinsa_assignment.style_coordinator.catalog.domain.CategoryId;
 import musinsa_assignment.style_coordinator.catalog.domain.CategoryRepository;
 import musinsa_assignment.style_coordinator.catalog.domain.Product;
+import musinsa_assignment.style_coordinator.catalog.domain.ProductRankingService;
 import musinsa_assignment.style_coordinator.catalog.domain.ProductRepository;
 import musinsa_assignment.style_coordinator.catalog.query.exception.NoBrandException;
 import musinsa_assignment.style_coordinator.catalog.query.exception.NoCategoryException;
@@ -22,6 +23,7 @@ public class CreateProductService {
   private final ProductRepository productRepository;
   private final CategoryRepository categoryRepository;
   private final BrandRepository brandRepository;
+  private final ProductRankingService productRankingService;
 
   @Transactional
   public ProductResponse create(ProductRequest productRequest) {
@@ -37,7 +39,7 @@ public class CreateProductService {
         .price(Money.of(productRequest.price()))
         .build();
     productRepository.save(product);
-
+    productRankingService.reRankForAdd(product.getCategoryId(), product.getBrandId(), product.getId(), product.getPrice());
     return ProductResponse.from(product);
   }
 }

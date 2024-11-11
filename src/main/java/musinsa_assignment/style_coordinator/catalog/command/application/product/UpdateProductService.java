@@ -5,6 +5,7 @@ import musinsa_assignment.style_coordinator.catalog.domain.BrandRepository;
 import musinsa_assignment.style_coordinator.catalog.domain.CategoryRepository;
 import musinsa_assignment.style_coordinator.catalog.domain.Product;
 import musinsa_assignment.style_coordinator.catalog.domain.ProductId;
+import musinsa_assignment.style_coordinator.catalog.domain.ProductRankingService;
 import musinsa_assignment.style_coordinator.catalog.domain.ProductRepository;
 import musinsa_assignment.style_coordinator.catalog.query.exception.NoBrandException;
 import musinsa_assignment.style_coordinator.catalog.query.exception.NoCategoryException;
@@ -19,6 +20,7 @@ public class UpdateProductService {
   private final ProductRepository productRepository;
   private final CategoryRepository categoryRepository;
   private final BrandRepository brandRepository;
+  private final ProductRankingService productRankingService;
 
   @Transactional
   public void update(String id, UpdateProductRequest request) {
@@ -30,6 +32,7 @@ public class UpdateProductService {
 
     product.update(updateModel);
     validateUpdateProduct(product);
+    productRankingService.reRankForAdd(product.getCategoryId(), product.getBrandId(), product.getId(), product.getPrice());
   }
 
   private void validateUpdateProduct(Product product) {

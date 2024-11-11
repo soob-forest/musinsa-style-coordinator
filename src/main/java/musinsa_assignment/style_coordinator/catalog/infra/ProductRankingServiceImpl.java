@@ -5,8 +5,11 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import musinsa_assignment.style_coordinator.catalog.domain.BrandId;
 import musinsa_assignment.style_coordinator.catalog.domain.CategoryId;
+import musinsa_assignment.style_coordinator.catalog.domain.ProductId;
 import musinsa_assignment.style_coordinator.catalog.domain.ProductRankingData;
 import musinsa_assignment.style_coordinator.catalog.domain.ProductRankingService;
+import musinsa_assignment.style_coordinator.common.domain.Money;
+import musinsa_assignment.style_coordinator.ranking.command.ReRankService;
 import musinsa_assignment.style_coordinator.ranking.query.RankingService;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class ProductRankingServiceImpl implements ProductRankingService {
 
   private final RankingService rankingService;
+  private final ReRankService reRankService;
 
   @Override
   public List<ProductRankingData> findMinPriceRankingByCategoryId(CategoryId categoryId) {
@@ -30,7 +34,13 @@ public class ProductRankingServiceImpl implements ProductRankingService {
 
   @Override
   public List<ProductRankingData> findMaxPriceRankingByCategoryId(CategoryId categoryId) {
-    var maxPriceProducts = rankingService.findMaxPriceRankingByCategoryId(categoryId);  
+    var maxPriceProducts = rankingService.findMaxPriceRankingByCategoryId(categoryId);
     return maxPriceProducts.stream().map(ProductRankingData::from).collect(Collectors.toList());
   }
+
+  @Override
+  public void reRankForAdd(CategoryId categoryId, BrandId brandId, ProductId productId, Money price) {
+    reRankService.reRank(categoryId, brandId, productId, price);
+  }
+
 }

@@ -18,7 +18,7 @@ public class ReRankService {
   private final MinPriceRankingRepository minPriceRankingRepository;
   private final MaxPriceRankingRepository maxPriceRankingRepository;
 
-  void reRank(CategoryId categoryId, BrandId brandId, ProductId productId, Money price) {
+  public void reRank(CategoryId categoryId, BrandId brandId, ProductId productId, Money price) {
     // 최대 가격 랭킹 업데이트
     rankMaxPrice(categoryId, brandId, productId, price);
     // 최소 가격 랭킹 업데이트
