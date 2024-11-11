@@ -1,6 +1,9 @@
 package musinsa_assignment.style_coordinator.admin.ui.integration;
 
 import static io.restassured.RestAssured.given;
+import static musinsa_assignment.style_coordinator.common.exception.ApplicationErrorCode.NO_BRAND;
+import static musinsa_assignment.style_coordinator.common.exception.ApplicationErrorCode.NO_CATEGORY;
+import static musinsa_assignment.style_coordinator.common.exception.ApplicationErrorCode.NO_PRODUCT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -89,7 +92,46 @@ class AdminProductControllerTest {
         .body("data.categoryId", equalTo(request.categoryId()))
         .body("data.brandId", equalTo(request.brandId()))
         .body("data.price", equalTo(1000.00f));
+  }
 
+  @Test
+  @DisplayName("admin사용자는 존재하지 않는 브랜드의 제품을 생성할 수 없다.")
+  void createFailedNoBrand() {
+    // given
+    var request = new ProductRequest("0", "20", new BigDecimal("1000.00"));
+
+    // when
+    given()
+        .body(request)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .when()
+        .post("/admin/api/v1/products")
+        .then()
+        .log().all()
+        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+        .body("data.code", equalTo(NO_BRAND.getCode()))
+        .body("data.message", equalTo(NO_BRAND.getMessage()));
+  }
+
+  @Test
+  @DisplayName("admin사용자는 존재하지 않는 카테고리의 제품을 생성할 수 없다.")
+  void createFailedNoCategory() {
+    // given
+    var request = new ProductRequest("20", "0", new BigDecimal("1000.00"));
+
+    // when
+    given()
+        .body(request)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .when()
+        .post("/admin/api/v1/products")
+        .then()
+        .log().all()
+        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+        .body("data.code", equalTo(NO_CATEGORY.getCode()))
+        .body("data.message", equalTo(NO_CATEGORY.getMessage()));
   }
 
   @Test
@@ -250,5 +292,31 @@ class AdminProductControllerTest {
     // then
     var optionalProduct = productRepository.findById(product.getId());
     assertThat(optionalProduct.isEmpty()).isEqualTo(true);
+  }
+
+  @Test
+  @DisplayName("admin사용자는 존재하지 않는 제품 정보를 삭제할 수 있다.")
+  void deleteFailed() {
+    // given
+    var product = Product.builder()
+        .id(ProductId.of("0"))
+        .categoryId(CategoryId.of("0"))
+        .brandId(BrandId.of("0"))
+        .price(Money.of(new BigDecimal("1000.00")))
+        .build();
+    productRepository.save(product);
+
+    // when
+    given()
+        .pathParam("id", "noProductId")
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .when()
+        .delete("/admin/api/v1/products/{id}")
+        .then()
+        .log().all()
+        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+        .body("data.code", equalTo(NO_PRODUCT.getCode()))
+        .body("data.message", equalTo(NO_PRODUCT.getMessage()));
+    
   }
 }

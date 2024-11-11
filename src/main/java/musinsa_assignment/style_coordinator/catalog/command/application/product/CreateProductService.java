@@ -1,6 +1,5 @@
 package musinsa_assignment.style_coordinator.catalog.command.application.product;
 
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import musinsa_assignment.style_coordinator.catalog.domain.Brand;
 import musinsa_assignment.style_coordinator.catalog.domain.BrandId;
@@ -11,6 +10,8 @@ import musinsa_assignment.style_coordinator.catalog.domain.CategoryRepository;
 import musinsa_assignment.style_coordinator.catalog.domain.Money;
 import musinsa_assignment.style_coordinator.catalog.domain.Product;
 import musinsa_assignment.style_coordinator.catalog.domain.ProductRepository;
+import musinsa_assignment.style_coordinator.catalog.query.exception.NoBrandException;
+import musinsa_assignment.style_coordinator.catalog.query.exception.NoCategoryException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +26,8 @@ public class CreateProductService {
   @Transactional
   public ProductResponse create(ProductRequest productRequest) {
 
-    Category category = categoryRepository.findById(CategoryId.of(productRequest.categoryId())).orElseThrow(NoSuchElementException::new);
-    Brand brand = brandRepository.findById(BrandId.of(productRequest.brandId())).orElseThrow(NoSuchElementException::new);
+    Category category = categoryRepository.findById(CategoryId.of(productRequest.categoryId())).orElseThrow(NoCategoryException::new);
+    Brand brand = brandRepository.findById(BrandId.of(productRequest.brandId())).orElseThrow(NoBrandException::new);
 
     var nextId = productRepository.nextId();
     var product = Product.builder()

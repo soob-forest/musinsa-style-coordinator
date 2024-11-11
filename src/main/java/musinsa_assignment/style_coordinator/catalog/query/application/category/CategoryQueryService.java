@@ -1,13 +1,14 @@
 package musinsa_assignment.style_coordinator.catalog.query.application.category;
 
 import java.util.Comparator;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import musinsa_assignment.style_coordinator.catalog.query.dao.BrandDao;
 import musinsa_assignment.style_coordinator.catalog.query.dao.CategoryDao;
 import musinsa_assignment.style_coordinator.catalog.query.dao.ProductDao;
 import musinsa_assignment.style_coordinator.catalog.query.dto.BrandData;
 import musinsa_assignment.style_coordinator.catalog.query.dto.CategoryData;
+import musinsa_assignment.style_coordinator.catalog.query.exception.NoBrandException;
+import musinsa_assignment.style_coordinator.catalog.query.exception.NoProductException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,9 +25,9 @@ public class CategoryQueryService {
         categoryDao.findAll().stream()
             .sorted(sortByExposureOrder())
             .map(categoryData -> {
-              var product = productDao.findTop1ByCategoryIdOrderByPriceAsc(categoryData.getId()).orElseThrow(NoSuchElementException::new);
+              var product = productDao.findTop1ByCategoryIdOrderByPriceAsc(categoryData.getId()).orElseThrow(NoProductException::new);
               BrandData brandData = brandDao.findById(product.getBrandId())
-                  .orElseThrow(NoSuchElementException::new);
+                  .orElseThrow(NoBrandException::new);
 
               return new CheapestProductBrandNameData(categoryData.getType(), brandData.getName(), product.getPrice());
             }).toList()

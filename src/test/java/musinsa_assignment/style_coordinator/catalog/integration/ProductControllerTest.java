@@ -49,4 +49,20 @@ public class ProductControllerTest {
         .body("data.maxPrice[0].brandName", equalTo("I"))
         .body("data.maxPrice[0].price", equalTo(11400.00f));
   }
+
+  @Test
+  @DisplayName("고객은 없는 카테고리 이름으로 최저, 최고 가격 브랜드와 상품 가격을 조회할 수 없다.")
+  void minAndMaxPriceProductByCategoryFailedNoCategory() {
+
+    // when
+    given()
+        .queryParam("category", "noCategoryName")
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .when()
+        .get("/api/v1/products/search/minAndMaxPriceProduct")
+        .then()
+        .log().all()
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .body("data.code", equalTo("C400"));
+  }
 }

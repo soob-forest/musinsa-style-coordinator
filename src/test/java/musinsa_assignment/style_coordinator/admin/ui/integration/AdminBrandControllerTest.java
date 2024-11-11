@@ -1,6 +1,7 @@
 package musinsa_assignment.style_coordinator.admin.ui.integration;
 
 import static io.restassured.RestAssured.given;
+import static musinsa_assignment.style_coordinator.common.exception.ApplicationErrorCode.NO_BRAND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -88,6 +89,25 @@ class AdminBrandControllerTest {
   }
 
   @Test
+  @DisplayName("존재하지 않는 브랜드의 정보는 변경할 수 없다.")
+  void updateFailed() {
+    // when
+    String newBrandName = "B";
+    given()
+        .pathParam("id", "noBrandId")
+        .body(Map.of("name", newBrandName))
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .when()
+        .patch("/admin/api/v1/brands/{id}")
+        .then()
+        .log().all()
+        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+        .body("data.code", equalTo(NO_BRAND.getCode()))
+        .body("data.message", equalTo(NO_BRAND.getMessage()));
+  }
+
+  @Test
   @DisplayName("admin사용자는 브랜드 정보를 삭제할 수 있다.")
   void delete() {
     // given
@@ -95,7 +115,6 @@ class AdminBrandControllerTest {
     brandRepository.save(brand);
 
     // when
-    String newBrandName = "B";
     given()
         .pathParam("id", brand.getId().getValue())
         .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -108,5 +127,25 @@ class AdminBrandControllerTest {
     // then
     var optionalBrand = brandRepository.findById(brand.getId());
     assertThat(optionalBrand.isEmpty()).isEqualTo(true);
+  }
+
+  @Test
+  @DisplayName("admin사용자는 존재하지 않는 브랜드 정보는 삭제할 수 없다.")
+  void deleteFailed() {
+    // given
+    var brand = Brand.builder().id(BrandId.of("0")).name("A").build();
+    brandRepository.save(brand);
+
+    // when
+    given()
+        .pathParam("id", "noBrandId")
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .when()
+        .delete("/admin/api/v1/brands/{id}")
+        .then()
+        .log().all()
+        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+        .body("data.code", equalTo(NO_BRAND.getCode()))
+        .body("data.message", equalTo(NO_BRAND.getMessage()));
   }
 }

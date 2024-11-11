@@ -15,7 +15,7 @@ public class GlobalRestControllerAdvice {
   @ExceptionHandler({ApplicationException.class})
   protected ApiResponse<Void> handle(ApplicationException applicationException) {
     log.error("[ApplicationException]", applicationException);
-    return ApiResponseGenerator.of(ApiResponseGenerator.FAILURE.getCode(), applicationException.getMessage());
+    return ApiResponseGenerator.of(applicationException.getCode(), applicationException.getMessage());
   }
 
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
