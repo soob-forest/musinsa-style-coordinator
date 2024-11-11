@@ -57,10 +57,9 @@ public class CategoryControllerTest {
         .body("data.contents[2].categoryName", equalTo("바지"))
         .body("data.contents[2].brandName", equalTo("D"))
         .body("data.contents[2].price", equalTo(3000.00f))
-        // TODO 현재 구현상으로는 A와 G가 가격이 같아, A가 노출되어 수정 필요
         // 스니커즈
         .body("data.contents[3].categoryName", equalTo("스니커즈"))
-        .body("data.contents[3].brandName", equalTo("A"))
+        .body("data.contents[3].brandName", equalTo("G"))
         .body("data.contents[3].price", equalTo(9000.00f))
         // 가방
         .body("data.contents[4].categoryName", equalTo("가방"))

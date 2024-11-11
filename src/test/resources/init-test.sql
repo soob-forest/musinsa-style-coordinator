@@ -111,3 +111,12 @@ insert into product values (69, 8, 5, 1700);  -- HAT
 insert into product values (70, 8, 6, 1700);  -- SOCKS
 insert into product values (71, 8, 7, 2400);  -- ACCESSORY
 
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (0, 16, 2, 0, 10000);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (1, 33, 4, 1, 5000);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (2, 26,3, 2, 3000);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (3, 3,6, 3, 9000);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (4, 51,6, 3, 9000);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (5, 4,0, 4, 2000);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (6,29 ,3, 5, 1500);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (7, 70,8, 6, 1700);
+insert into min_price_ranking(id, product_id, brand_id, category_id, price) values (8, 47 ,5, 7, 1900);

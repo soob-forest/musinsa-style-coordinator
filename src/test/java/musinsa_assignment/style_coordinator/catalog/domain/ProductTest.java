@@ -3,6 +3,7 @@ package musinsa_assignment.style_coordinator.catalog.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
+import musinsa_assignment.style_coordinator.common.domain.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

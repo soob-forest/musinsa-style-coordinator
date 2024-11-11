@@ -1,10 +1,12 @@
-package musinsa_assignment.style_coordinator.catalog.query.dto;
+package musinsa_assignment.style_coordinator.ranking.domain;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,27 +18,30 @@ import musinsa_assignment.style_coordinator.catalog.domain.ProductId;
 import musinsa_assignment.style_coordinator.common.domain.Money;
 
 @Entity
-@Table(name = "product")
-@Getter
+@Table(name = "min_price_ranking")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductData {
+@Getter
+public class MinPriceRanking {
 
-  @EmbeddedId
-  private ProductId id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long id;
   @Embedded
   private CategoryId categoryId;
   @Embedded
   private BrandId brandId;
   @Embedded
+  private ProductId productId;
+
+  @Embedded
   @AttributeOverride(name = "value", column = @Column(name = "price"))
   private Money price;
 
   @Builder
-  public ProductData(ProductId id, CategoryId categoryId, BrandId brandId, Money price) {
-    this.id = id;
+  public MinPriceRanking(CategoryId categoryId, BrandId brandId, ProductId productId, Money price) {
     this.categoryId = categoryId;
     this.brandId = brandId;
+    this.productId = productId;
     this.price = price;
   }
 }
-

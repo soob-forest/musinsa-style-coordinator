@@ -3,6 +3,7 @@ package musinsa_assignment.style_coordinator.catalog.domain;
 import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Getter;
+import musinsa_assignment.style_coordinator.common.domain.Money;
 
 @Getter
 public class ProductUpdateModel {

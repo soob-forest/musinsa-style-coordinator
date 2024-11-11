@@ -2,7 +2,7 @@ package musinsa_assignment.style_coordinator.catalog.query.application.brand;
 
 import java.math.BigDecimal;
 import musinsa_assignment.style_coordinator.catalog.domain.CategoryType;
-import musinsa_assignment.style_coordinator.catalog.domain.Money;
+import musinsa_assignment.style_coordinator.common.domain.Money;
 
 public record CheapestCategoryView(String categoryName, BigDecimal price) {
 

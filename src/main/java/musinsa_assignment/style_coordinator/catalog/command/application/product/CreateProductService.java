@@ -7,11 +7,11 @@ import musinsa_assignment.style_coordinator.catalog.domain.BrandRepository;
 import musinsa_assignment.style_coordinator.catalog.domain.Category;
 import musinsa_assignment.style_coordinator.catalog.domain.CategoryId;
 import musinsa_assignment.style_coordinator.catalog.domain.CategoryRepository;
-import musinsa_assignment.style_coordinator.catalog.domain.Money;
 import musinsa_assignment.style_coordinator.catalog.domain.Product;
 import musinsa_assignment.style_coordinator.catalog.domain.ProductRepository;
 import musinsa_assignment.style_coordinator.catalog.query.exception.NoBrandException;
 import musinsa_assignment.style_coordinator.catalog.query.exception.NoCategoryException;
+import musinsa_assignment.style_coordinator.common.domain.Money;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

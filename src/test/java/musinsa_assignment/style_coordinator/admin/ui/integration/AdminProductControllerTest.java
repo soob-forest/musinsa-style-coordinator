@@ -13,10 +13,10 @@ import java.math.BigDecimal;
 import musinsa_assignment.style_coordinator.catalog.command.application.product.ProductRequest;
 import musinsa_assignment.style_coordinator.catalog.domain.BrandId;
 import musinsa_assignment.style_coordinator.catalog.domain.CategoryId;
-import musinsa_assignment.style_coordinator.catalog.domain.Money;
 import musinsa_assignment.style_coordinator.catalog.domain.Product;
 import musinsa_assignment.style_coordinator.catalog.domain.ProductId;
 import musinsa_assignment.style_coordinator.catalog.domain.ProductRepository;
+import musinsa_assignment.style_coordinator.common.domain.Money;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -317,6 +317,6 @@ class AdminProductControllerTest {
         .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
         .body("data.code", equalTo(NO_PRODUCT.getCode()))
         .body("data.message", equalTo(NO_PRODUCT.getMessage()));
-    
+
   }
 }

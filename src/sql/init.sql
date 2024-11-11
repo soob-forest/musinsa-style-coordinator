@@ -107,3 +107,12 @@ insert into product values (69, 8, 5, 1700);  -- HAT
 insert into product values (70, 8, 6, 1700);  -- SOCKS
 insert into product values (71, 8, 7, 2400);  -- ACCESSORY
 
+
+insert into min_price_ranking values (0, 2, 0, 10000);
+insert into min_price_ranking values (1, 4, 1, 5000);
+insert into min_price_ranking values (2, 3, 2, 3000);
+insert into min_price_ranking values (3, 6, 3, 9000);
+insert into min_price_ranking values (4, 0, 4, 2000);
+insert into min_price_ranking values (5, 3, 5, 1500);
+insert into min_price_ranking values (6, 8, 6, 1700);
+insert into min_price_ranking values (7, 5, 7, 1900);

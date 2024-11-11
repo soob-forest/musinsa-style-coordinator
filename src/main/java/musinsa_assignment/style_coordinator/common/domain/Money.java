@@ -1,4 +1,4 @@
-package musinsa_assignment.style_coordinator.catalog.domain;
+package musinsa_assignment.style_coordinator.common.domain;
 
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
@@ -14,10 +14,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(staticName = "of")
 public class Money {
+
   private BigDecimal value;
 
   public BigDecimal getValue() {
     return value;
+  }
+
+  public boolean isLessThan(Money other) {
+    return this.value.compareTo(other.value) < 0;
+  }
+
+  public boolean isGreaterThan(Money other) {
+    return this.value.compareTo(other.value) > 0;
   }
 
   @Override

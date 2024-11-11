@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import musinsa_assignment.style_coordinator.catalog.domain.ProductUpdateModel.ProductUpdateModelBuilder;
+import musinsa_assignment.style_coordinator.common.domain.Money;
 
 @Entity
 @Table(name = "product")
